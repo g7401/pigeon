@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-utility-pigeon-wfe-config-url-map
+  namespace: app-utility
+  labels:
+    name: app-utility-pigeon-wfe-config-url-map
+data:
+   url_conf: |-
+    window.serverConfig = {
+    VUE_APP_FILE_API_BASE_URL: '/fs',
+    VUE_APP_API_BASE_URL : '/pigeon-sss'
+    }     
+            

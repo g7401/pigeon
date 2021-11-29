@@ -1,0 +1,34 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+resources:
+  repositories:
+    - repository: pipelines
+      name: Lark/pipeline-template
+      type: git
+      ref: main
+trigger:
+- none
+
+variables:
+- group: service-connection
+- name: acrConnection
+  value: $(acr-connection)
+- name: major
+  value: '1'
+- name: minor
+  value: '0'
+- name: patch
+  value: '0'
+- name: project.version
+  value: '$(Build.BuildNumber)'
+name: $(major).$(minor).$(patch).$(Rev:R)
+
+stages:
+- template: node-qa-prod-ci-template.yml@pipelines
+  parameters:
+    projectVersion: '$(project.version)'
+    sourceName: '$(Build.Repository.Name)'
+    acrConnection: $(acrConnection)
+

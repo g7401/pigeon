@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: app-utility-pigeon-wfe-service
+  namespace: app-utility
+  labels:
+    name: app-utility-pigeon-wfe-deployment
+spec:
+  ports:
+    - protocol: TCP
+      port: 11554
+      targetPort: 11554
+  selector:
+    app: app-utility-pigeon-wfe
+

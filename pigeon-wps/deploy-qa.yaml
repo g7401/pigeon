@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-utility-qa-pigeon-wfe-deployment
+  namespace: app-utility-qa
+  labels:
+    name: app-utility-qa-pigeon-wfe-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-utility-qa-pigeon-wfe
+  template:
+    metadata:
+      labels:
+        app: app-utility-qa-pigeon-wfe
+    spec:
+      containers:
+      - name: app-utility-qa-pigeon-wfe
+        image: azrce2acr01.azurecr.cn/pigeon-wfe-user:1.0.1
+        resources:
+          requests:
+            memory: "200Mi"
+          limits:
+            memory: "512Mi"  
+        ports:
+        - containerPort: 11554
+        volumeMounts:
+          - mountPath: /etc/nginx/nginx.conf
+            name: nginx
+            subPath: nginx.conf
+          - mountPath: /usr/share/nginx/html/config/server.js
+            name: url-config
+            subPath: server.js      
+      volumes:
+        - name: nginx
+          configMap:
+            name: app-utility-qa-pigeon-wfe-config-map
+            items:
+              - key: nginx_conf
+                path: nginx.conf
+        - name: url-config
+          configMap:
+            name: app-utility-qa-pigeon-wfe-config-url-map
+            items:
+              - key: url_conf
+                path: server.js                
+        
+ 
